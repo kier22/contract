@@ -6,7 +6,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
-from datetime import datetime
 
 class ContractRecurrencyBasicMixin(models.AbstractModel):
     _name = "contract.recurrency.basic.mixin"
@@ -108,7 +107,7 @@ class ContractRecurrencyMixin(models.AbstractModel):
     def _compute_next_period_date_start(self):
         for rec in self:
             if rec.last_date_invoiced:
-                next_period_date_start = datetime.strptime(rec.last_date_invoiced + relativedelta(days=1))
+                next_period_date_start = rec.last_date_invoiced + relativedelta(days=1))
             else:
                 next_period_date_start = rec.date_start
             if rec.date_end and next_period_date_start > rec.date_end:
