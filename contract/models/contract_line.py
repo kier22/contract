@@ -12,6 +12,8 @@ from odoo.exceptions import ValidationError
 
 from .contract_line_constraints import get_allowed
 
+from datetime import datetime
+
 
 class ContractLine(models.Model):
     _name = "contract.line"
@@ -117,9 +119,9 @@ class ContractLine(models.Model):
         for rec in self - rest:
             lines = rec.contract_id.contract_line_ids
             if not rec.last_date_invoiced and any(lines.mapped("last_date_invoiced")):
-                next_period_date_start = max(
+                next_period_date_start = datetime.strptime(max(
                     lines.filtered("last_date_invoiced").mapped("last_date_invoiced")
-                ) + relativedelta(days=1)
+                ) + relativedelta(days=1))
                 if rec.date_end and next_period_date_start > rec.date_end:
                     next_period_date_start = False
                 rec.next_period_date_start = next_period_date_start
